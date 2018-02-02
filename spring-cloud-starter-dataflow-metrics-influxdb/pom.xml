@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>spring-cloud-starter-dataflow-metrics-influxdb</artifactId>
+    <packaging>jar</packaging>
+    <name>spring-cloud-starter-dataflow-metrics-influxdb</name>
+    <description>Spring Cloud Data Flow Metrics InfluxDB Core</description>
+
+    <parent>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-dataflow-metrics-influxdb-build</artifactId>
+        <version>1.0.0.BUILD-SNAPSHOT</version>
+    </parent>
+
+    <properties>
+        <scs-app-maven-plugin.version>1.2.5.RELEASE</scs-app-maven-plugin.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.influxdb</groupId>
+            <artifactId>influxdb-java</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.cloud.stream.app.plugin</groupId>
+                <artifactId>spring-cloud-stream-app-maven-plugin</artifactId>
+                <configuration>
+                    <generatedProjectHome>${session.executionRootDirectory}/apps</generatedProjectHome>
+                    <generatedProjectVersion>${project.version}</generatedProjectVersion>
+                    <dockerHubOrg>springcloud</dockerHubOrg>
+                    <bom>
+                        <name>metrics-influxdb-bom</name>
+                        <groupId>org.springframework.cloud</groupId>
+                        <artifactId>spring-cloud-dataflow-metrics-influxdb-dependencies</artifactId>
+                        <version>${project.version}</version>
+                    </bom>
+                    <generatedApps>
+                        <metrics-influxdb>
+                            <starterGroupId>org.springframework.cloud</starterGroupId>
+                            <starterArtifactId>spring-cloud-starter-dataflow-metrics-influxdb</starterArtifactId>
+                            <autoConfigClass>
+                                org.springframework.cloud.dataflow.metrics.influxdb.MetricsInfluxDbConfiguration.class
+                            </autoConfigClass>
+                        </metrics-influxdb>
+                    </generatedApps>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
