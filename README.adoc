@@ -27,7 +27,7 @@ root:/# influx
 ** DB user: admin
 ** DB password: admin
 
-* Import `spring-cloud-starter-dataflow-metrics-influxdb/src/main/resource/dashboard/SpringCloud.json` dashboard.
+* Import `SpringCloud.json` dashboard: [SpringCloud.json](https://github.com/tzolov/spring-cloud-dataflow-metrics-influxdb/blob/master/spring-cloud-starter-dataflow-metrics-influxdb/src/main/resources/dashboards/SpringCloud.json)
 
 ==== Metrics-influxdb app
 
