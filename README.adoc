@@ -16,17 +16,18 @@ root:/# influx
 > show databases
 ```
 
-==== Import Grafana SpringCLoud Dashboard
+==== Grafana
 
-Use the `spring-cloud-starter-dataflow-metrics-influxdb/src/main/resource/dashboard/SpringCloud.json` dashboard.
+* Create new influxDB datasource
+** Label Name: influx_auto_DataFlowMetricsCollector
+** Host: http://localhost:8086
+** Type: InfluxDB
+** Access: direct
+** Database: DataFlowMetricsCollector
+** DB user: admin
+** DB password: admin
 
-Label Name: influx_auto_DataFlowMetricsCollector
-Host: http://localhost:8086
-Type: InfluxDB
-Access: direct
-Database: DataFlowMetricsCollector
-DB user: admin
-DB password: admin
+* Import `spring-cloud-starter-dataflow-metrics-influxdb/src/main/resource/dashboard/SpringCloud.json` dashboard.
 
 ==== Metrics-influxdb app
 
