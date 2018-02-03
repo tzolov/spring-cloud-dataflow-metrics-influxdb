@@ -1,1 +1,75 @@
-== Spring cloud dataflow metrics-InfluxDB Sink
+= Spring cloud dataflow metrics-InfluxDB Sink
+
+== Quick Start
+
+==== Prepare InfluxDB and Grafana
+```
+docker run -d --name grafana -p 3000:3000 grafana/grafana
+docker run -d --name influxdb -p 8086:8086 influxdb
+docker ps
+```
+Create `DataFlowMetricsCollector` Influx database
+```
+docker exec -it <influxdb container-id> /bin/bash
+root:/# influx
+> create database DataFlowMetricsCollector
+> show databases
+```
+
+==== Import Grafana SpringCLoud Dashboard
+
+Use the `spring-cloud-starter-dataflow-metrics-influxdb/src/main/resource/dashboard/SpringCloud.json` dashboard.
+
+Label Name: influx_auto_DataFlowMetricsCollector
+Host: http://localhost:8086
+Type: InfluxDB
+Access: direct
+Database: DataFlowMetricsCollector
+DB user: admin
+DB password: admin
+
+==== Metrics-influxdb app
+
+* Build & generate apps
+```
+git clone https://github.com/tzolov/spring-cloud-dataflow-metrics-influxdb
+cd spring-cloud-dataflow-metrics-influxdb
+./mvnw clean install -PgenerateApps
+```
+* Build an app
+```
+cd apps/metrics-influxdb-rabbit
+mvn clean install
+```
+
+Run the app with default settings
+```
+java -jar ./target/metrics-influxdb-rabbit-1.0.0.BUILD-SNAPSHOT.jar \
+ --spring.cloud.dataflow.metrics.influxdb.influxUrl=http://localhost:8086 \
+ --spring.cloud.dataflow.metrics.influxdb.influxDatabase=DataFlowMetricsCollector \
+ --spring.cloud.dataflow.metrics.influxdb.influxUser=admin \
+ --spring.cloud.dataflow.metrics.influxdb.influxPassword=admin \
+ --spring.cloud.dataflow.metrics.influxdb.influxLogLevel=BASIC
+```
+
+==== SCDF server
+Start a SCDF server with `--spring.cloud.dataflow.applicationProperties.stream.spring.cloud.stream.bindings.applicationMetrics.destination=metrics`
+
+
+== With Corlysis
+* Create https://corlysis.com/ account (use the free option)
+* Generate Api Key: <API KEY>
+* Create Influx Database called: DataFlowMetricsCollector
+* Start SCDF with `--spring.cloud.dataflow.applicationProperties.stream.spring.cloud.stream.bindings.applicationMetrics.destination=metrics`
+* Start the metrics-influxdb sink:
+```
+java -jar ./target/metrics-influxdb-rabbit-1.0.0.BUILD-SNAPSHOT.jar \
+ --spring.cloud.dataflow.metrics.influxdb.influxUrl=https://corlysis.com:8086 \
+ --spring.cloud.dataflow.metrics.influxdb.influxDatabase=DataFlowMetricsCollector \
+ --spring.cloud.dataflow.metrics.influxdb.influxUser=token \
+ --spring.cloud.dataflow.metrics.influxdb.influxPassword=<API KEY> \
+ --spring.cloud.dataflow.metrics.influxdb.influxRetentionPolicy=trial \
+ --spring.cloud.dataflow.metrics.influxdb.influxLogLevel=BASIC
+
+```
+
